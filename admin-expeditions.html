@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S816P190VN"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-S816P190VN');
+    </script>
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2482023752745520"
+         crossorigin="anonymous"></script>
+    <meta name="google-adsense-account" content="ca-pub-2482023752745520">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="trekko-api-base" content="/api">
+    <title>Organizar Expedições - Trekko</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="js/admin-api.js" defer></script>
+    <script src="admin-auth.js" defer></script>
+    <script src="js/admin-expeditions.js" defer></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="https://www.trekko.com.br/" class="text-2xl font-bold text-green-600">Trekko</a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="https://www.trekko.com.br/" class="text-gray-500 hover:text-green-600 px-3 py-2 rounded-md text-sm font-medium">Início</a>
+                        <a href="trilhas.html" class="text-gray-500 hover:text-green-600 px-3 py-2 rounded-md text-sm font-medium">Trilhas</a>
+                        <a href="guias.html" class="text-gray-500 hover:text-green-600 px-3 py-2 rounded-md text-sm font-medium">Guias</a>
+                        <a href="admin-expeditions.html" class="text-green-600 px-3 py-2 rounded-md text-sm font-medium" data-permission="EXPEDICOES">Organizar Expedições</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4" id="authSection">
+                    <!-- User Menu (hidden by default) -->
+                    <div id="userMenu" class="relative">
+                        <button id="userMenuBtn" class="flex items-center space-x-2 text-gray-700 hover:text-green-600">
+                            <span id="userName" class="font-medium">Guia</span>
+                            <span class="text-sm">▼</span>
+                        </button>
+                        <div id="userDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                            <a href="perfil.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Meu Perfil</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Configurações</a>
+                            <button id="logoutBtn" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sair</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Header Section -->
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Minhas Expedições</h1>
+                <p class="text-gray-600 mt-2">Gerencie suas expedições e organize grupos para trilhas</p>
+            </div>
+            <button type="button" id="newExpeditionBtn" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium flex items-center space-x-2" data-permission="EXPEDICOES">
+                <span>+</span>
+                <span>Nova Expedição</span>
+            </button>
+        </div>
+
+        <!-- Search and Filters -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                <select id="statusFilter" class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+                    <option value="">Todos os status</option>
+                    <option value="DRAFT">Rascunho</option>
+                    <option value="PUBLISHED">Publicada</option>
+                    <option value="SCHEDULED">Agendada</option>
+                    <option value="IN_PROGRESS">Em andamento</option>
+                    <option value="COMPLETED">Concluída</option>
+                    <option value="CANCELLED">Cancelada</option>
+                </select>
+                <input type="date" id="fromDateFilter" class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Início a partir de">
+                <input type="date" id="toDateFilter" class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Início até">
+                <input type="text" id="searchFilter" placeholder="Buscar por título, trilha ou guia" class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+                <button type="button" id="applyFiltersBtn" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-md font-medium">
+                    🔍 Buscar
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading" class="text-center py-8 hidden">
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
+            <p class="mt-2 text-gray-600">Carregando expedições...</p>
+        </div>
+
+        <!-- Expeditions Table -->
+        <div id="expeditionsTable" class="bg-white rounded-lg shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trilha</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Período</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Preço</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vagas</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="expeditionsTableBody" class="bg-white divide-y divide-gray-200">
+                        <!-- Expeditions will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- No Expeditions -->
+        <div id="noExpeditions" class="text-center py-12 hidden">
+            <div class="bg-gray-50 rounded-lg p-8">
+                <h3 class="text-lg font-medium text-gray-900 mb-2">Nenhuma expedição encontrada</h3>
+                <p class="text-gray-500 mb-4">Comece criando sua primeira expedição para organizar grupos de trilheiros.</p>
+                <button type="button" id="createFirstExpeditionBtn" data-permission="EXPEDICOES"
+                    class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium">
+                    + Criar Primeira Expedição
+                </button>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div id="paginationControls" class="flex justify-center items-center space-x-2 mt-8 hidden">
+            <button id="prevPageBtn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 disabled:opacity-50" disabled>Anterior</button>
+            <div id="pageNumbers" class="flex space-x-1"></div>
+            <button id="nextPageBtn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 disabled:opacity-50" disabled>Próxima</button>
+        </div>
+    </main>
+
+    <!-- New Expedition Modal -->
+    <div id="expeditionModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg max-w-2xl w-full p-6 max-h-screen overflow-y-auto">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-semibold text-gray-900" id="modalTitle">Nova Expedição</h3>
+                    <button id="closeModal" class="text-gray-400 hover:text-gray-600">
+                        <span class="text-2xl">×</span>
+                    </button>
+                </div>
+
+                <form id="expeditionForm">
+                    <!-- Trail Selection -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">1) Trilha *</label>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
+                            <select id="modalStateSelect" class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                <option value="">Estado</option>
+                                <option value="MG">MG - Minas Gerais</option>
+                                <option value="RJ">RJ - Rio de Janeiro</option>
+                                <option value="SP">SP - São Paulo</option>
+                                <option value="ES">ES - Espírito Santo</option>
+                                <option value="PR">PR - Paraná</option>
+                                <option value="SC">SC - Santa Catarina</option>
+                                <option value="RS">RS - Rio Grande do Sul</option>
+                                <option value="BA">BA - Bahia</option>
+                                <option value="GO">GO - Goiás</option>
+                                <option value="MT">MT - Mato Grosso</option>
+                            </select>
+                            <select id="modalCitySelect" class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                <option value="">Cidade</option>
+                            </select>
+                            <input type="text" id="modalTrailSearch" placeholder="Nome da trilha..." 
+                                   class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+                        </div>
+                        <div id="trailResults" class="space-y-2 max-h-40 overflow-y-auto hidden">
+                            <!-- Trail search results will appear here -->
+                        </div>
+                        <div id="selectedTrail" class="hidden p-3 bg-green-50 border border-green-200 rounded-md">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <div class="font-medium text-green-900" id="selectedTrailName"></div>
+                                    <div class="text-sm text-green-700" id="selectedTrailLocation"></div>
+                                </div>
+                                <button type="button" id="clearSelectedTrailBtn" class="text-green-600 hover:text-green-800">
+                                    ×
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Date Period -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">2) Período *</label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs text-gray-500 mb-1">Data de Início</label>
+                                <input type="date" id="startDate" required
+                                       class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-500 mb-1">Data de Fim</label>
+                                <input type="date" id="endDate" required
+                                       class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">ⓘ Fim ≥ Início; duração ≤ 30 dias</p>
+                    </div>
+
+                    <!-- Price -->
+                    <div class="mb-6">
+                        <label for="price" class="block text-sm font-medium text-gray-700 mb-2">3) Preço por pessoa *</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-2 text-gray-500">R$</span>
+                            <input type="number" id="price" min="1" step="0.01" required
+                                   class="w-full pl-10 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                   placeholder="0,00">
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">ⓘ mínimo R$ 1,00</p>
+                    </div>
+
+                    <!-- Max People -->
+                    <div class="mb-6">
+                        <label for="maxPeople" class="block text-sm font-medium text-gray-700 mb-2">4) Quantidade máxima *</label>
+                        <input type="number" id="maxPeople" min="1" max="50" required
+                               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                               placeholder="1">
+                        <p class="text-xs text-gray-500 mt-1">ⓘ até 50 pessoas</p>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-6">
+                        <label for="description" class="block text-sm font-medium text-gray-700 mb-2">5) Descrição *</label>
+                        <textarea id="description" rows="4" maxlength="3000" required
+                                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                  placeholder="Descreva os detalhes da expedição, itinerário, o que está incluído, equipamentos necessários..."></textarea>
+                        <div class="flex justify-between text-xs text-gray-500 mt-1">
+                            <span>ⓘ Descreva detalhes importantes para os participantes</span>
+                            <span><span id="descriptionCount">0</span>/3000</span>
+                        </div>
+                    </div>
+
+                    <!-- Form Errors -->
+                    <div id="formErrors" class="hidden mb-6 p-4 bg-red-50 border border-red-200 rounded-md">
+                        <div class="text-red-800 text-sm">
+                            <ul id="errorList" class="list-disc list-inside space-y-1"></ul>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="flex space-x-3">
+                        <button type="button" id="saveDraftBtn"
+                                class="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium"
+                                data-permission="EXPEDICOES">
+                            Salvar Rascunho
+                        </button>
+                        <button type="submit" id="publishBtn"
+                                class="flex-1 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium"
+                                data-permission="EXPEDICOES">
+                            Publicar Expedição
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

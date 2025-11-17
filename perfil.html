@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S816P190VN"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-S816P190VN');
+    </script>
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2482023752745520"
+         crossorigin="anonymous"></script>
+    <meta name="google-adsense-account" content="ca-pub-2482023752745520">
+    
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - Trekko</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .profile-avatar {
+            background: linear-gradient(135deg, #059669, #047857);
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+        }
+        .guide-avatar {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="https://www.trekko.com.br/" class="text-2xl font-bold text-green-600">Trekko</a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="https://www.trekko.com.br/" class="text-gray-500 hover:text-green-600 px-3 py-2 rounded-md text-sm font-medium">Início</a>
+                        <a href="trilhas.html" class="text-gray-500 hover:text-green-600 px-3 py-2 rounded-md text-sm font-medium">Trilhas</a>
+                        <a href="guias.html" class="text-gray-500 hover:text-green-600 px-3 py-2 rounded-md text-sm font-medium">Guias</a>
+                        <a href="sobre.html" class="text-gray-500 hover:text-green-600 px-3 py-2 rounded-md text-sm font-medium">Sobre</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <button id="userMenuBtn" class="flex items-center space-x-2 text-gray-700 hover:text-green-600">
+                            <span id="userName" class="font-medium">Carregando...</span>
+                            <span class="text-sm">▼</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Profile Header -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <div class="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6">
+                <!-- Avatar -->
+                <div id="profileAvatar" class="profile-avatar w-24 h-24 rounded-full flex items-center justify-center text-white text-3xl font-bold">
+                    <span id="avatarInitials">--</span>
+                </div>
+                
+                <!-- Profile Info -->
+                <div class="flex-1 text-center md:text-left">
+                    <h1 id="profileName" class="text-2xl font-bold text-gray-900 mb-2">Carregando...</h1>
+                    <p id="profileEmail" class="text-gray-600 mb-2">carregando@exemplo.com</p>
+                    <div class="flex flex-wrap justify-center md:justify-start gap-2 mb-4">
+                        <span id="userTypeBadge" class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">🥾 Carregando...</span>
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">✓ Verificado</span>
+                        <span id="cadasturBadge" class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium hidden">📋 CADASTUR</span>
+                    </div>
+                    <p id="profileBio" class="text-gray-700 max-w-2xl">Carregando biografia...</p>
+                </div>
+                
+                <!-- Edit Button -->
+                <button onclick="openEditModal()" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md font-medium">
+                    ✏️ Editar Perfil
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="stat-card rounded-lg p-6 text-center">
+                <div class="text-3xl font-bold text-green-600 mb-2">0</div>
+                <div class="text-gray-600" id="stat1Label">Trilhas Realizadas</div>
+            </div>
+            <div class="stat-card rounded-lg p-6 text-center">
+                <div class="text-3xl font-bold text-green-600 mb-2">0</div>
+                <div class="text-gray-600">Km Percorridos</div>
+            </div>
+            <div class="stat-card rounded-lg p-6 text-center">
+                <div class="text-3xl font-bold text-green-600 mb-2">0</div>
+                <div class="text-gray-600" id="stat3Label">Guias Contratados</div>
+            </div>
+            <div class="stat-card rounded-lg p-6 text-center">
+                <div id="experienceLevel" class="text-3xl font-bold text-green-600 mb-2">Iniciante</div>
+                <div class="text-gray-600">Nível</div>
+            </div>
+        </div>
+
+        <!-- Content Tabs -->
+        <div class="bg-white rounded-lg shadow-sm">
+            <div class="border-b border-gray-200">
+                <nav class="-mb-px flex space-x-8 px-6">
+                    <button class="tab-btn border-b-2 border-green-500 py-4 px-1 text-sm font-medium text-green-600" data-tab="atividades">
+                        Minhas Atividades
+                    </button>
+                    <button class="tab-btn border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="favoritos">
+                        Favoritos
+                    </button>
+                    <button class="tab-btn border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="avaliacoes">
+                        Avaliações
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Tab Contents -->
+            <div class="p-6">
+                <div id="atividades" class="tab-content">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-medium text-gray-900">Minhas Atividades Recentes</h3>
+                        <button id="createExpeditionBtn" onclick="openCreateExpeditionModal()" class="hidden bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                            + Criar Expedição
+                        </button>
+                    </div>
+                    <div id="activitiesContainer" class="text-center py-8">
+                        <p class="text-gray-500">Nenhuma atividade registrada ainda.</p>
+                        <p id="activitySubtext" class="text-sm text-gray-400 mt-2">Suas atividades aparecerão aqui após realizar trilhas.</p>
+                    </div>
+
+                    <div id="guideExpeditionsSection" class="hidden border-t border-gray-200 pt-6 mt-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="text-lg font-semibold text-gray-900">Expedições</h4>
+                            <button type="button" onclick="openCreateExpeditionModal()" class="hidden text-sm font-medium text-green-600 hover:text-green-700" id="secondaryCreateExpeditionBtn">
+                                + Nova expedição
+                            </button>
+                        </div>
+                        <div id="guideExpeditionsList" class="space-y-4"></div>
+                    </div>
+                </div>
+
+                <div id="favoritos" class="tab-content hidden">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Trilhas Favoritas</h3>
+                    <div class="text-center py-8">
+                        <p class="text-gray-500">Nenhuma trilha favorita ainda.</p>
+                        <p class="text-sm text-gray-400 mt-2">Suas trilhas favoritas aparecerão aqui.</p>
+                    </div>
+                </div>
+
+                <div id="avaliacoes" class="tab-content hidden">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Minhas Avaliações</h3>
+                    <div class="text-center py-8">
+                        <p class="text-gray-500">Nenhuma avaliação ainda.</p>
+                        <p class="text-sm text-gray-400 mt-2">Suas avaliações de trilhas e guias aparecerão aqui.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Edit Profile Modal -->
+    <div id="editProfileModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+        <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-1/2 shadow-lg rounded-md bg-white">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-gray-900">Editar Perfil</h3>
+                <button onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600">
+                    <span class="sr-only">Fechar</span>
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <form id="editProfileForm" onsubmit="saveProfile(event)">
+                <div class="space-y-4">
+                    <!-- Upload de Foto de Perfil -->
+                    <div class="text-center">
+                        <div class="mb-4">
+                            <div id="currentAvatar" class="w-24 h-24 mx-auto rounded-full bg-gray-300 flex items-center justify-center text-white text-2xl font-bold">
+                                UP
+                            </div>
+                        </div>
+                        <div>
+                            <label for="profilePhoto" class="block text-sm font-medium text-gray-700 mb-2">Foto de Perfil</label>
+                            <input type="file" id="profilePhoto" name="profilePhoto" accept="image/*" class="hidden" onchange="previewProfilePhoto(event)">
+                            <button type="button" onclick="document.getElementById('profilePhoto').click()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                                📷 Escolher Foto
+                            </button>
+                            <button type="button" id="removePhotoBtn" onclick="removeProfilePhoto()" class="hidden ml-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                                🗑️ Remover
+                            </button>
+                            <p class="text-xs text-gray-500 mt-1">Máximo 5MB - JPG, PNG ou GIF</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="editName" class="block text-sm font-medium text-gray-700">Nome Completo</label>
+                        <input type="text" id="editName" name="name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500" required>
+                    </div>
+
+                    <div>
+                        <label for="editEmail" class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" id="editEmail" name="email" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500" required>
+                    </div>
+
+                    <div id="cadasturField" class="hidden">
+                        <label for="editCadastur" class="block text-sm font-medium text-gray-700">Número CADASTUR</label>
+                        <input type="text" id="editCadastur" name="cadastur" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500" placeholder="Ex: 27123456789">
+                        <p id="cadasturHelp" class="text-xs text-gray-500 mt-1">Número oficial do CADASTUR</p>
+                    </div>
+
+                    <div>
+                        <label for="editPhone" class="block text-sm font-medium text-gray-700">Telefone</label>
+                        <input type="tel" id="editPhone" name="phone" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500" placeholder="(11) 99999-9999">
+                    </div>
+
+                    <div>
+                        <label for="editLocation" class="block text-sm font-medium text-gray-700">Localização</label>
+                        <input type="text" id="editLocation" name="location" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500" placeholder="Cidade, Estado">
+                        <p id="locationHelp" class="text-xs text-gray-500 mt-1">Cidade e estado onde atua</p>
+                    </div>
+
+                    <div>
+                        <label for="editBio" class="block text-sm font-medium text-gray-700">Biografia</label>
+                        <textarea id="editBio" name="bio" rows="3" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500" placeholder="Conte um pouco sobre você e sua paixão por trilhas..."></textarea>
+                    </div>
+
+                    <div>
+                        <label for="editExperienceLevel" class="block text-sm font-medium text-gray-700">Nível de Experiência</label>
+                        <select id="editExperienceLevel" name="experience_level" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
+                            <option value="iniciante">🌱 Iniciante</option>
+                            <option value="intermediario">🥾 Intermediário</option>
+                            <option value="avancado">🏔️ Avançado</option>
+                            <option value="expert">⭐ Expert</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button type="button" onclick="closeEditModal()" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-green-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-green-700">
+                        Salvar Alterações
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Create Expedition Modal -->
+    <div id="createExpeditionModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+        <div class="relative top-10 mx-auto p-5 border w-11/12 md:w-2/3 lg:w-3/5 shadow-lg rounded-md bg-white max-h-screen overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-gray-900">Criar nova expedição</h3>
+                <button onclick="closeCreateExpeditionModal()" class="text-gray-400 hover:text-gray-600">
+                    <span class="sr-only">Fechar</span>
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="flex space-x-1 mb-6 bg-gray-100 p-1 rounded-lg">
+                <button id="expeditionSelectTab" class="flex-1 py-2 px-3 text-sm font-medium rounded-md bg-white text-green-600 shadow-sm" onclick="showCreateExpeditionTab('selection')">
+                    Selecionar trilha cadastrada
+                </button>
+                <button id="expeditionRequestTabBtn" class="flex-1 py-2 px-3 text-sm font-medium rounded-md text-gray-500 hover:text-gray-700" onclick="showCreateExpeditionTab('request')">
+                    Solicitar nova trilha
+                </button>
+            </div>
+
+            <div id="expeditionSelectionTab" class="space-y-4">
+                <form id="expeditionTrailSearchForm" class="bg-gray-50 p-4 rounded-lg space-y-4">
+                    <h4 class="text-sm font-medium text-gray-900">🔍 Busque trilhas disponíveis</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label for="filterUF" class="block text-xs font-medium text-gray-700 mb-1">Estado (UF)</label>
+                            <select id="filterUF" class="w-full text-sm border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
+                                <option value="">Todos os Estados</option>
+                                <option value="AC">Acre</option>
+                                <option value="AL">Alagoas</option>
+                                <option value="AP">Amapá</option>
+                                <option value="AM">Amazonas</option>
+                                <option value="BA">Bahia</option>
+                                <option value="CE">Ceará</option>
+                                <option value="DF">Distrito Federal</option>
+                                <option value="ES">Espírito Santo</option>
+                                <option value="GO">Goiás</option>
+                                <option value="MA">Maranhão</option>
+                                <option value="MT">Mato Grosso</option>
+                                <option value="MS">Mato Grosso do Sul</option>
+                                <option value="MG">Minas Gerais</option>
+                                <option value="PA">Pará</option>
+                                <option value="PB">Paraíba</option>
+                                <option value="PR">Paraná</option>
+                                <option value="PE">Pernambuco</option>
+                                <option value="PI">Piauí</option>
+                                <option value="RJ">Rio de Janeiro</option>
+                                <option value="RN">Rio Grande do Norte</option>
+                                <option value="RS">Rio Grande do Sul</option>
+                                <option value="RO">Rondônia</option>
+                                <option value="RR">Roraima</option>
+                                <option value="SC">Santa Catarina</option>
+                                <option value="SP">São Paulo</option>
+                                <option value="SE">Sergipe</option>
+                                <option value="TO">Tocantins</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="filterCity" class="block text-xs font-medium text-gray-700 mb-1">Cidade</label>
+                            <input type="text" id="filterCity" class="w-full text-sm border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500" placeholder="Digite a cidade...">
+                        </div>
+                        <div>
+                            <label for="filterTrailName" class="block text-xs font-medium text-gray-700 mb-1">Nome da Trilha</label>
+                            <input type="text" id="filterTrailName" class="w-full text-sm border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500" placeholder="Digite o nome da trilha...">
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between text-xs text-gray-500">
+                        <button type="button" id="clearTrailFiltersBtn" class="hover:text-gray-700">🗑️ Limpar filtros</button>
+                        <span id="expeditionTrailResultsInfo" class="hidden">0 trilhas encontradas</span>
+                    </div>
+                </form>
+
+                <div id="expeditionTrailsList" class="space-y-2 max-h-60 overflow-y-auto border border-dashed border-gray-200 rounded-lg p-4">
+                    <div class="text-center py-4 text-gray-500">Use os filtros acima para localizar uma trilha na base do Trekko.</div>
+                </div>
+
+                <div class="flex items-center justify-between text-sm text-gray-500">
+                    <span>As trilhas disponíveis utilizam as bases oficiais BD_TRILHAS e BD_CADASTUR.</span>
+                    <button type="button" class="text-green-600 hover:text-green-700" onclick="showCreateExpeditionTab('request')">Não encontrou? Solicitar nova trilha</button>
+                </div>
+
+                <div id="selectedExpeditionTrail" class="hidden bg-green-50 border border-green-100 rounded-lg p-4">
+                    <h4 class="font-medium text-gray-900 mb-2">Trilha selecionada</h4>
+                    <div id="selectedExpeditionTrailDetails" class="text-sm text-gray-700 space-y-1"></div>
+                </div>
+
+                <form id="createExpeditionForm" class="hidden space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="expeditionStartDate" class="block text-sm font-medium text-gray-700">Data de início *</label>
+                            <input type="date" id="expeditionStartDate" name="start_date" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500" required>
+                        </div>
+                        <div>
+                            <label for="expeditionEndDate" class="block text-sm font-medium text-gray-700">Data de término *</label>
+                            <input type="date" id="expeditionEndDate" name="end_date" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500" required>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="expeditionPrice" class="block text-sm font-medium text-gray-700">Preço por pessoa (R$) *</label>
+                            <input type="number" id="expeditionPrice" name="price" step="0.01" min="0" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500" placeholder="0,00" required>
+                        </div>
+                        <div>
+                            <label for="expeditionMaxParticipants" class="block text-sm font-medium text-gray-700">Vagas disponíveis *</label>
+                            <input type="number" id="expeditionMaxParticipants" name="max_participants" min="1" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500" placeholder="Número máximo de participantes" required>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="expeditionDescription" class="block text-sm font-medium text-gray-700">Descrição da expedição *</label>
+                        <textarea id="expeditionDescription" name="description" rows="4" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500" placeholder="Inclua detalhes sobre roteiro, equipamentos necessários e o que está incluso." required></textarea>
+                    </div>
+                </form>
+            </div>
+
+            <div id="expeditionRequestTab" class="hidden">
+                <div class="bg-blue-50 p-4 rounded-lg mb-4">
+                    <p class="text-sm text-blue-800">Não encontrou a trilha que deseja conduzir? Solicite a inclusão preenchendo as informações abaixo. Nossa equipe validará a trilha antes de liberá-la.</p>
+                </div>
+
+                <form id="requestTrailForm" class="space-y-4">
+                    <div>
+                        <label for="requestTrailName" class="block text-sm font-medium text-gray-700">Nome da Trilha *</label>
+                        <input type="text" id="requestTrailName" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500" required>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="requestTrailLocation" class="block text-sm font-medium text-gray-700">Localização *</label>
+                            <input type="text" id="requestTrailLocation" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500" placeholder="Cidade, Estado" required>
+                        </div>
+                        <div>
+                            <label for="requestTrailDistance" class="block text-sm font-medium text-gray-700">Distância (km) *</label>
+                            <input type="number" id="requestTrailDistance" step="0.1" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500" required>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="requestTrailDifficulty" class="block text-sm font-medium text-gray-700">Nível de Dificuldade *</label>
+                            <select id="requestTrailDifficulty" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500" required>
+                                <option value="">Selecione...</option>
+                                <option value="facil">🟢 Fácil</option>
+                                <option value="moderado">🟡 Moderado</option>
+                                <option value="dificil">🟠 Difícil</option>
+                                <option value="extremo">🔴 Extremo</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="requestTrailDuration" class="block text-sm font-medium text-gray-700">Duração Estimada *</label>
+                            <input type="text" id="requestTrailDuration" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500" placeholder="Ex: 4 horas" required>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="requestTrailDescription" class="block text-sm font-medium text-gray-700">Descrição da Trilha *</label>
+                        <textarea id="requestTrailDescription" rows="4" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500" placeholder="Descreva a trilha, pontos de interesse, dificuldades e equipamentos necessários." required></textarea>
+                    </div>
+
+                    <div>
+                        <label for="requestGuidePrice" class="block text-sm font-medium text-gray-700">Valor do Seu Serviço (R$) *</label>
+                        <input type="number" id="requestGuidePrice" step="0.01" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500" placeholder="0.00" required>
+                        <p class="text-xs text-gray-500 mt-1">Informe o valor que você cobra para guiar esta trilha</p>
+                    </div>
+
+                    <div>
+                        <label for="requestAdditionalInfo" class="block text-sm font-medium text-gray-700">Informações Adicionais</label>
+                        <textarea id="requestAdditionalInfo" rows="3" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500" placeholder="Compartilhe detalhes sobre logística, pontos de encontro ou exigências específicas."></textarea>
+                    </div>
+                </form>
+            </div>
+
+            <div class="flex justify-end space-x-3 mt-6">
+                <button type="button" onclick="closeCreateExpeditionModal()" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                    Cancelar
+                </button>
+                <button type="button" id="expeditionModalActionBtn" onclick="handleExpeditionPrimaryAction()" class="px-4 py-2 bg-green-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-green-700">
+                    Salvar expedição
+                </button>
+            </div>
+        </div>
+    </div>
+
+    
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    const API_BASE = '/api';
+    const AUTH_API = `${API_BASE}/auth`;
+    const PUBLIC_API = `${API_BASE}/public`;
+    const ADMIN_API = `${API_BASE}/admin`;
+    const TRAIL_SEARCH_LIMIT = 50;
+
+    let sessionState = { authenticated: false, user: null, roles: [], csrfToken: null };
+    let currentUser = null;
+    let guideProfile = null;
+    let cachedTrailResults = [];
+    let selectedTrail = null;
+    let expeditionSearchTimeout = null;
+    let expeditionCurrentTab = 'selection';
+
+    document.addEventListener('DOMContentLoaded', () => {
+        void initializeProfilePage();
+        if (window.trekkoAuth?.onAuthStateChanged) {
+            window.trekkoAuth.onAuthStateChanged(() => {
+                void initializeProfilePage();
+            });
+        }
+    });
+
+    async function initializeProfilePage() {
+        await hydrateSession();
+        if (!sessionState.authenticated || !sessionState.user) {
+            showGuestState();
+            return;
+        }
+
+        await loadCurrentUser();
+        updateUserInterface(currentUser);
+        setupTabs();
+        setupExpeditionSearch();
+        setupExpeditionButtons();
+        await loadGuideExpeditions();
+    }
+
+    async function hydrateSession() {
+        if (window.trekkoAuth?.readyPromise) {
+            await window.trekkoAuth.readyPromise;
+            const snapshot = window.trekkoAuth.getSession();
+            if (snapshot) {
+                sessionState = {
+                    authenticated: snapshot.authenticated,
+                    user: snapshot.user,
+                    roles: Array.isArray(snapshot.roles) ? snapshot.roles : [],
+                    csrfToken: snapshot.csrfToken ?? null,
+                };
+                return;
+            }
+        }
+
+        try {
+            const response = await fetch(`${AUTH_API}/me`, { credentials: 'include' });
+            const payload = await response.json();
+            sessionState.csrfToken = payload?.csrfToken ?? null;
+            if (payload?.authenticated && payload.user) {
+                sessionState.authenticated = true;
+                sessionState.user = payload.user;
+                sessionState.roles = Array.isArray(payload.roles) ? payload.roles : [];
+            } else {
+                sessionState = { authenticated: false, user: null, roles: [], csrfToken: sessionState.csrfToken };
+            }
+        } catch (error) {
+            console.error('Erro ao verificar sessão:', error);
+            sessionState = { authenticated: false, user: null, roles: [], csrfToken: null };
+        }
+    }
+
+    async function loadCurrentUser() {
+        if (!sessionState.user?.id) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`${ADMIN_API}/users/${sessionState.user.id}`, {
+                method: 'GET',
+                credentials: 'include',
+            });
+
+            if (!response.ok) {
+                throw new Error(`Falha ao carregar perfil: ${response.status}`);
+            }
+
+            const payload = await response.json();
+            const detail = payload?.user;
+            if (!detail) {
+                throw new Error('Perfil não encontrado');
+            }
+
+            guideProfile = detail.guideProfile ?? null;
+            currentUser = normalizeUserDetail(detail);
+            localStorage.setItem('userData', JSON.stringify(currentUser));
+        } catch (error) {
+            console.error('Erro ao carregar dados do usuário:', error);
+            currentUser = buildAnonymousUser();
+            guideProfile = null;
+        }
+    }
+
+    function normalizeUserDetail(detail) {
+        const role = (detail.role ?? '').toString().trim().toUpperCase();
+        const userType = role === 'GUIA' ? 'guia' : 'trekker';
+        const base = {
+            id: detail.id,
+            name: detail.name ?? detail.email,
+            email: detail.email,
+            user_type: userType,
+            phone: detail.phone ?? '',
+            location: detail.location ?? '',
+            experience_level: detail.experienceLevel ?? 'iniciante',
+            bio: detail.bio ?? '',
+        };
+
+        if (detail.guideProfile) {
+            base.bio = detail.guideProfile.bio ?? base.bio;
+            base.cadastur_number = detail.guideProfile.cadasturNumber ?? null;
+        }
+
+        return base;
+    }
+
+    function buildAnonymousUser() {
+        return {
+            id: 'anonymous',
+            name: 'Usuário',
+            email: 'usuario@trekko.com.br',
+            user_type: 'trekker',
+            phone: '',
+            location: '',
+            bio: '',
+            experience_level: 'iniciante',
+        };
+    }
+
+    function showGuestState() {
+        const nameEl = document.getElementById('profileName');
+        const emailEl = document.getElementById('profileEmail');
+        const bioEl = document.getElementById('profileBio');
+        const activitiesContainer = document.getElementById('activitiesContainer');
+        const primaryBtn = document.getElementById('createExpeditionBtn');
+        const secondaryBtn = document.getElementById('secondaryCreateExpeditionBtn');
+        const expeditionSection = document.getElementById('guideExpeditionsSection');
+
+        if (nameEl) nameEl.textContent = 'Faça login para acessar seu perfil';
+        if (emailEl) emailEl.textContent = '';
+        if (bioEl) bioEl.textContent = 'Entre com sua conta para visualizar seus dados e cadastrar expedições.';
+        if (activitiesContainer) {
+            activitiesContainer.innerHTML = `
+                <div class="text-center py-8 text-gray-500">
+                    <div class="text-4xl mb-2">🔒</div>
+                    <p>Faça login para visualizar suas atividades.</p>
+                    <p class="text-sm mt-1">Utilize o menu superior para entrar na sua conta.</p>
+                </div>
+            `;
+        }
+        primaryBtn?.classList.add('hidden');
+        secondaryBtn?.classList.add('hidden');
+        expeditionSection?.classList.add('hidden');
+    }
+
+    function updateUserInterface(user) {
+        const nameEl = document.getElementById('profileName');
+        const emailEl = document.getElementById('profileEmail');
+        const bioEl = document.getElementById('profileBio');
+        const userNameEl = document.getElementById('userName');
+        const avatar = document.getElementById('profileAvatar');
+        const cadasturBadge = document.getElementById('cadasturBadge');
+        const userTypeBadge = document.getElementById('userTypeBadge');
+        const stat1Label = document.getElementById('stat1Label');
+        const stat3Label = document.getElementById('stat3Label');
+        const activitySubtext = document.getElementById('activitySubtext');
+        const experienceLevel = document.getElementById('experienceLevel');
+
+        if (nameEl) nameEl.textContent = user.name;
+        if (emailEl) emailEl.textContent = user.email;
+        if (bioEl) bioEl.textContent = user.bio || 'Adicione uma breve descrição sobre você.';
+        if (userNameEl) userNameEl.textContent = user.name;
+
+        if (avatar) {
+            const initials = user.name
+                .split(' ')
+                .filter(Boolean)
+                .map((part) => part[0])
+                .join('')
+                .toUpperCase()
+                .slice(0, 2);
+            avatar.innerHTML = `<span class="text-white text-3xl font-bold">${initials || 'TU'}</span>`;
+            avatar.className = `${user.user_type === 'guia' ? 'guide-avatar' : 'profile-avatar'} w-24 h-24 rounded-full flex items-center justify-center text-white text-3xl font-bold`;
+        }
+
+        if (user.user_type === 'guia') {
+            if (userTypeBadge) {
+                userTypeBadge.textContent = '🧭 Guia Profissional';
+                userTypeBadge.className = 'bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium';
+            }
+            cadasturBadge?.classList.remove('hidden');
+            if (stat1Label) stat1Label.textContent = 'Trilhas Conduzidas';
+            if (stat3Label) stat3Label.textContent = 'Clientes Atendidos';
+            if (activitySubtext) activitySubtext.textContent = 'Cadastre suas expedições para destacar seu trabalho.';
+        } else {
+            if (userTypeBadge) {
+                userTypeBadge.textContent = '🥾 Trekker';
+                userTypeBadge.className = 'bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium';
+            }
+            cadasturBadge?.classList.add('hidden');
+            if (stat1Label) stat1Label.textContent = 'Trilhas Realizadas';
+            if (stat3Label) stat3Label.textContent = 'Guias Contratados';
+            if (activitySubtext) activitySubtext.textContent = 'Suas atividades aparecerão aqui após realizar trilhas.';
+        }
+
+        if (experienceLevel) {
+            const labels = {
+                iniciante: '🌱 Iniciante',
+                intermediario: '🥾 Intermediário',
+                avancado: '🏔️ Avançado',
+                expert: '⭐ Expert',
+            };
+            experienceLevel.textContent = labels[user.experience_level] ?? '🌱 Iniciante';
+        }
+    }
+
+    function setupTabs() {
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                const target = button.dataset.tab;
+                if (!target) return;
+
+                tabButtons.forEach((btn) => {
+                    btn.classList.remove('border-green-500', 'text-green-600');
+                    btn.classList.add('border-transparent', 'text-gray-500');
+                });
+
+                contents.forEach((content) => content.classList.add('hidden'));
+
+                button.classList.add('border-green-500', 'text-green-600');
+                button.classList.remove('border-transparent', 'text-gray-500');
+
+                const content = document.getElementById(target);
+                if (content) content.classList.remove('hidden');
+            });
+        });
+    }
+
+    function setupExpeditionButtons() {
+        const primaryBtn = document.getElementById('createExpeditionBtn');
+        const secondaryBtn = document.getElementById('secondaryCreateExpeditionBtn');
+        primaryBtn?.addEventListener('click', openCreateExpeditionModal);
+        secondaryBtn?.addEventListener('click', openCreateExpeditionModal);
+    }
+
+    function setupExpeditionSearch() {
+        const ufSelect = document.getElementById('filterUF');
+        const cityInput = document.getElementById('filterCity');
+        const trailInput = document.getElementById('filterTrailName');
+        const clearBtn = document.getElementById('clearTrailFiltersBtn');
+        const searchForm = document.getElementById('expeditionTrailSearchForm');
+
+        [ufSelect, cityInput, trailInput].forEach((input) => {
+            if (!input) return;
+            const eventName = input.tagName === 'SELECT' ? 'change' : 'input';
+            input.addEventListener(eventName, triggerTrailSearch);
+        });
+
+        clearBtn?.addEventListener('click', () => {
+            if (ufSelect) ufSelect.value = '';
+            if (cityInput) cityInput.value = '';
+            if (trailInput) trailInput.value = '';
+            triggerTrailSearch();
+        });
+
+        searchForm?.addEventListener('submit', (event) => {
+            event.preventDefault();
+            triggerTrailSearch();
+        });
+    }
+
+    function triggerTrailSearch() {
+        if (expeditionSearchTimeout) {
+            clearTimeout(expeditionSearchTimeout);
+        }
+
+        expeditionSearchTimeout = setTimeout(() => {
+            const uf = document.getElementById('filterUF')?.value ?? '';
+            const city = document.getElementById('filterCity')?.value ?? '';
+            const name = document.getElementById('filterTrailName')?.value ?? '';
+            void performTrailSearch({ state: uf, city, search: name });
+        }, 300);
+    }
+
+    async function performTrailSearch(filters) {
+        const list = document.getElementById('expeditionTrailsList');
+        const info = document.getElementById('expeditionTrailResultsInfo');
+        if (!list) return;
+
+        list.innerHTML = '<div class="text-center py-4 text-gray-500">Buscando trilhas cadastradas...</div>';
+
+        const params = new URLSearchParams();
+        params.append('pageSize', String(TRAIL_SEARCH_LIMIT));
+        if (filters.state) params.append('state', filters.state);
+        if (filters.city) params.append('city', filters.city);
+        if (filters.search) params.append('search', filters.search);
+
+        try {
+            const response = await fetch(`${PUBLIC_API}/trails?${params.toString()}`, {
+                method: 'GET',
+                credentials: 'include',
+            });
+
+            if (!response.ok) {
+                throw new Error(`Erro ${response.status}`);
+            }
+
+            const payload = await response.json();
+            const trails = Array.isArray(payload?.trails) ? payload.trails : [];
+
+            cachedTrailResults = trails;
+            renderTrailResults(trails);
+            if (info) {
+                info.classList.remove('hidden');
+                info.textContent = `${trails.length} trilha${trails.length === 1 ? '' : 's'} encontrada${trails.length === 1 ? '' : 's'}`;
+            }
+        } catch (error) {
+            console.error('Erro ao buscar trilhas:', error);
+            cachedTrailResults = [];
+            list.innerHTML = `
+                <div class="text-center py-4 text-red-500">
+                    Não foi possível carregar as trilhas agora. Tente novamente em instantes.
+                </div>
+            `;
+            info?.classList.add('hidden');
+        }
+    }
+
+    function renderTrailResults(trails) {
+        const list = document.getElementById('expeditionTrailsList');
+        if (!list) return;
+
+        if (!trails.length) {
+            list.innerHTML = `
+                <div class="text-center py-6 text-gray-500 space-y-3">
+                    <p>Nenhuma trilha encontrada com os filtros informados.</p>
+                    <button type="button" id="requestNewTrailBtn" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-orange-500 rounded-md hover:bg-orange-600">Solicitar nova trilha</button>
+                </div>
+            `;
+            document.getElementById('requestNewTrailBtn')?.addEventListener('click', () => {
+                showCreateExpeditionTab('request');
+            });
+            return;
+        }
+
+        list.innerHTML = trails
+            .map((trail) => {
+                const distance = typeof trail.distanceKm === 'number' ? trail.distanceKm : trail.distance ?? 0;
+                const duration = trail.durationMinutes ? `${Math.round(trail.durationMinutes / 60)}h` : 'Duração não informada';
+                const difficulty = trail.difficulty ?? 'moderado';
+                const location = trail.city?.name
+                    ? `${trail.city.name}${trail.city.state?.code ? `, ${trail.city.state.code}` : ''}`
+                    : trail.state?.code ?? 'Local não informado';
+
+                return `
+                    <button type="button" class="w-full text-left border border-gray-200 rounded-lg p-4 hover:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 transition" data-trail-id="${trail.id}">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <h5 class="text-sm font-semibold text-gray-900">${trail.name}</h5>
+                                <p class="text-xs text-gray-500">📍 ${location}</p>
+                            </div>
+                            <span class="text-xs font-medium text-green-600">Selecionar</span>
+                        </div>
+                        <div class="mt-2 text-xs text-gray-500 flex flex-wrap gap-x-4 gap-y-1">
+                            <span>📏 ${Number(distance).toFixed(1)} km</span>
+                            <span>⏱️ ${duration}</span>
+                            <span>${getDifficultyIcon(difficulty)} ${getDifficultyLabel(difficulty)}</span>
+                        </div>
+                    </button>
+                `;
+            })
+            .join('');
+
+        list.querySelectorAll('button[data-trail-id]').forEach((button) => {
+            button.addEventListener('click', () => {
+                const trailId = button.getAttribute('data-trail-id');
+                selectTrail(trailId);
+            });
+        });
+    }
+
+    function selectTrail(trailId) {
+        if (!trailId) return;
+        const trail = cachedTrailResults.find((item) => String(item.id) === String(trailId));
+        if (!trail) return;
+
+        selectedTrail = trail;
+        showCreateExpeditionTab('selection');
+        updateSelectedTrailView();
+        prepareExpeditionForm();
+    }
+
+    function updateSelectedTrailView() {
+        const wrapper = document.getElementById('selectedExpeditionTrail');
+        const details = document.getElementById('selectedExpeditionTrailDetails');
+        if (!wrapper || !details) return;
+
+        if (!selectedTrail) {
+            wrapper.classList.add('hidden');
+            details.innerHTML = '';
+            return;
+        }
+
+        const distance = typeof selectedTrail.distanceKm === 'number' ? selectedTrail.distanceKm : selectedTrail.distance ?? 0;
+        const duration = selectedTrail.durationMinutes ? `${Math.round(selectedTrail.durationMinutes / 60)}h` : 'Duração não informada';
+        const difficulty = selectedTrail.difficulty ?? 'moderado';
+        const location = selectedTrail.city?.name
+            ? `${selectedTrail.city.name}${selectedTrail.city.state?.code ? `, ${selectedTrail.city.state.code}` : ''}`
+            : selectedTrail.state?.code ?? 'Local não informado';
+
+        details.innerHTML = `
+            <div class="bg-white border border-green-200 rounded-md p-3">
+                <h5 class="text-sm font-semibold text-gray-900">${selectedTrail.name}</h5>
+                <p class="text-xs text-gray-500">📍 ${location}</p>
+                <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-600 mt-2">
+                    <span>📏 ${Number(distance).toFixed(1)} km</span>
+                    <span>⏱️ ${duration}</span>
+                    <span>${getDifficultyIcon(difficulty)} ${getDifficultyLabel(difficulty)}</span>
+                </div>
+            </div>
+        `;
+        wrapper.classList.remove('hidden');
+    }
+
+    function prepareExpeditionForm() {
+        const form = document.getElementById('createExpeditionForm');
+        if (!form) return;
+        form.classList.remove('hidden');
+
+        const startInput = document.getElementById('expeditionStartDate');
+        const endInput = document.getElementById('expeditionEndDate');
+        const today = new Date().toISOString().split('T')[0];
+        if (startInput && !startInput.value) startInput.value = today;
+        if (endInput && !endInput.value) endInput.value = today;
+    }
+
+    function showCreateExpeditionTab(tab) {
+        expeditionCurrentTab = tab;
+        const selectionTab = document.getElementById('expeditionSelectionTab');
+        const requestTab = document.getElementById('expeditionRequestTab');
+        const selectBtn = document.getElementById('expeditionSelectTab');
+        const requestBtn = document.getElementById('expeditionRequestTabBtn');
+        const actionBtn = document.getElementById('expeditionModalActionBtn');
+
+        if (tab === 'selection') {
+            selectionTab?.classList.remove('hidden');
+            requestTab?.classList.add('hidden');
+            selectBtn?.classList.add('bg-white', 'text-green-600', 'shadow-sm');
+            requestBtn?.classList.remove('bg-white', 'text-green-600', 'shadow-sm');
+            requestBtn?.classList.add('text-gray-500');
+            if (actionBtn) actionBtn.textContent = 'Salvar expedição';
+        } else {
+            selectionTab?.classList.add('hidden');
+            requestTab?.classList.remove('hidden');
+            requestBtn?.classList.add('bg-white', 'text-green-600', 'shadow-sm');
+            selectBtn?.classList.remove('bg-white', 'text-green-600', 'shadow-sm');
+            selectBtn?.classList.add('text-gray-500');
+            if (actionBtn) actionBtn.textContent = 'Enviar solicitação';
+        }
+    }
+
+    function resetExpeditionModal() {
+        selectedTrail = null;
+        cachedTrailResults = [];
+        const form = document.getElementById('createExpeditionForm');
+        const trailList = document.getElementById('expeditionTrailsList');
+        const selectedWrapper = document.getElementById('selectedExpeditionTrail');
+        const selectedDetails = document.getElementById('selectedExpeditionTrailDetails');
+        const info = document.getElementById('expeditionTrailResultsInfo');
+
+        form?.reset();
+        form?.classList.add('hidden');
+        if (trailList) {
+            trailList.innerHTML = '<div class="text-center py-4 text-gray-500">Use os filtros para localizar uma trilha cadastrada.</div>';
+        }
+        selectedWrapper?.classList.add('hidden');
+        if (selectedDetails) selectedDetails.innerHTML = '';
+        info?.classList.add('hidden');
+        showCreateExpeditionTab('selection');
+    }
+
+    function openCreateExpeditionModal() {
+        if (!currentUser || currentUser.user_type !== 'guia') {
+            alert('A criação de expedições está disponível apenas para guias credenciados.');
+            return;
+        }
+
+        if (!guideProfile?.id) {
+            alert('Seu perfil de guia ainda está em análise. Entre em contato com o suporte para mais informações.');
+            return;
+        }
+
+        const modal = document.getElementById('createExpeditionModal');
+        if (!modal) return;
+
+        resetExpeditionModal();
+        modal.classList.remove('hidden');
+        triggerTrailSearch();
+    }
+
+    window.closeCreateExpeditionModal = function closeCreateExpeditionModal() {
+        document.getElementById('createExpeditionModal')?.classList.add('hidden');
+    };
+
+    async function handleExpeditionPrimaryAction() {
+        if (expeditionCurrentTab === 'request') {
+            submitTrailRequest();
+        } else {
+            await saveExpedition();
+        }
+    }
+
+    window.handleExpeditionPrimaryAction = handleExpeditionPrimaryAction;
+
+    function submitTrailRequest() {
+        const form = document.getElementById('trailRequestForm');
+        if (!form?.reportValidity()) {
+            return;
+        }
+        window.trekkoAuth?.showSuccess?.('Solicitação registrada! Nossa equipe entrará em contato em breve.');
+        alert('Solicitação enviada! Entraremos em contato após a análise da trilha.');
+        showCreateExpeditionTab('selection');
+    }
+
+    async function saveExpedition() {
+        if (!selectedTrail) {
+            alert('Selecione uma trilha cadastrada antes de salvar a expedição.');
+            return;
+        }
+
+        if (!guideProfile?.id) {
+            alert('Não foi possível localizar seu perfil de guia.');
+            return;
+        }
+
+        const form = document.getElementById('createExpeditionForm');
+        if (!form?.reportValidity()) {
+            return;
+        }
+
+        const startDate = document.getElementById('expeditionStartDate')?.value;
+        const endDate = document.getElementById('expeditionEndDate')?.value;
+        const price = parseFloat(document.getElementById('expeditionPrice')?.value ?? '0');
+        const maxPeople = parseInt(document.getElementById('expeditionMaxParticipants')?.value ?? '0', 10);
+        const description = document.getElementById('expeditionDescription')?.value.trim() ?? '';
+
+        if (!startDate || !endDate) {
+            alert('Informe as datas da expedição.');
+            return;
+        }
+
+        if (new Date(endDate) < new Date(startDate)) {
+            alert('A data de término deve ser igual ou posterior à data de início.');
+            return;
+        }
+
+        if (!Number.isFinite(price) || price <= 0) {
+            alert('Informe um preço válido para a expedição.');
+            return;
+        }
+
+        if (!Number.isFinite(maxPeople) || maxPeople <= 0) {
+            alert('Informe a capacidade máxima da expedição.');
+            return;
+        }
+
+        const payload = {
+            trailId: selectedTrail.id,
+            guideId: guideProfile.id,
+            startDate,
+            endDate,
+            pricePerPerson: price,
+            maxPeople,
+            description,
+        };
+
+        try {
+            const csrfToken = await obtainCsrfToken();
+            const response = await fetch(`${ADMIN_API}/expeditions`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-csrf-token': csrfToken ?? '',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            const result = await response.json().catch(() => ({}));
+            if (!response.ok) {
+                const message = result?.message || 'Não foi possível salvar a expedição. Tente novamente.';
+                alert(message);
+                return;
+            }
+
+            window.trekkoAuth?.showSuccess?.('Expedição criada com sucesso!');
+            alert('Expedição criada com sucesso!');
+            closeCreateExpeditionModal();
+            await loadGuideExpeditions();
+        } catch (error) {
+            console.error('Erro ao salvar expedição:', error);
+            alert('Erro de conexão ao salvar a expedição.');
+        }
+    }
+
+    async function loadGuideExpeditions() {
+        const section = document.getElementById('guideExpeditionsSection');
+        const list = document.getElementById('guideExpeditionsList');
+        const primaryBtn = document.getElementById('createExpeditionBtn');
+        const secondaryBtn = document.getElementById('secondaryCreateExpeditionBtn');
+
+        if (!currentUser || currentUser.user_type !== 'guia') {
+            section?.classList.add('hidden');
+            primaryBtn?.classList.add('hidden');
+            secondaryBtn?.classList.add('hidden');
+            if (list) list.innerHTML = '';
+            return;
+        }
+
+        primaryBtn?.classList.remove('hidden');
+        secondaryBtn?.classList.remove('hidden');
+        section?.classList.remove('hidden');
+
+        if (!guideProfile?.id) {
+            if (list) {
+                list.innerHTML = `
+                    <div class="text-sm text-gray-500 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                        Seu perfil de guia ainda não foi validado. As expedições serão liberadas após a verificação do CADASTUR.
+                    </div>
+                `;
+            }
+            return;
+        }
+
+        try {
+            const params = new URLSearchParams({ guideId: guideProfile.id, pageSize: '50' });
+            const response = await fetch(`${ADMIN_API}/expeditions?${params.toString()}`, {
+                method: 'GET',
+                credentials: 'include',
+            });
+
+            if (!response.ok) {
+                throw new Error(`Erro ${response.status}`);
+            }
+
+            const payload = await response.json();
+            const expeditions = Array.isArray(payload?.expeditions) ? payload.expeditions : [];
+            renderExpeditionList(expeditions);
+        } catch (error) {
+            console.error('Erro ao carregar expedições:', error);
+            if (list) {
+                list.innerHTML = `
+                    <div class="text-sm text-red-500 bg-red-50 border border-red-200 rounded-lg p-4">
+                        Não foi possível carregar suas expedições. Tente novamente em instantes.
+                    </div>
+                `;
+            }
+        }
+    }
+
+    function renderExpeditionList(expeditions) {
+        const list = document.getElementById('guideExpeditionsList');
+        if (!list) return;
+
+        if (!expeditions.length) {
+            list.innerHTML = `
+                <div class="text-center text-sm text-gray-500 bg-gray-50 border border-gray-200 rounded-lg p-6">
+                    <p class="font-medium text-gray-700 mb-1">Nenhuma expedição cadastrada ainda.</p>
+                    <p class="text-xs text-gray-500">Clique em “+ Criar Expedição” para planejar a sua primeira aventura.</p>
+                </div>
+            `;
+            return;
+        }
+
+        list.innerHTML = expeditions
+            .map((expedition) => {
+                const start = formatDate(expedition.startDate);
+                const end = formatDate(expedition.endDate);
+                const price = formatCurrency(expedition.priceCents / 100);
+                const available = `${expedition.availableSpots}/${expedition.maxParticipants}`;
+                const status = formatStatus(expedition.status);
+                const trailName = expedition.trail?.name ?? 'Trilha não informada';
+
+                return `
+                    <div class="border border-gray-200 rounded-lg p-4 bg-white shadow-sm">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h5 class="text-base font-semibold text-gray-900">${trailName}</h5>
+                                <p class="text-sm text-gray-500">${start} até ${end}</p>
+                            </div>
+                            <span class="text-xs font-semibold px-2 py-1 rounded-full ${status.badgeClass}">${status.label}</span>
+                        </div>
+                        <div class="mt-3 grid grid-cols-1 md:grid-cols-3 gap-3 text-sm text-gray-600">
+                            <div>💰 Valor por pessoa: <strong>${price}</strong></div>
+                            <div>👥 Vagas disponíveis: <strong>${available}</strong></div>
+                            <div>🕒 Reservas confirmadas: <strong>${expedition.reservationsCount}</strong></div>
+                        </div>
+                        <p class="mt-3 text-sm text-gray-600">${expedition.description ?? 'Descrição não informada.'}</p>
+                    </div>
+                `;
+            })
+            .join('');
+    }
+
+    function formatDate(value) {
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return 'Data indefinida';
+        return date.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+    }
+
+    function formatCurrency(value) {
+        return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value ?? 0);
+    }
+
+    function formatStatus(status) {
+        const map = {
+            DRAFT: { label: 'Rascunho', badgeClass: 'bg-gray-100 text-gray-700' },
+            PUBLISHED: { label: 'Publicada', badgeClass: 'bg-green-100 text-green-700' },
+            SCHEDULED: { label: 'Agendada', badgeClass: 'bg-blue-100 text-blue-700' },
+            IN_PROGRESS: { label: 'Em andamento', badgeClass: 'bg-purple-100 text-purple-700' },
+            COMPLETED: { label: 'Concluída', badgeClass: 'bg-green-200 text-green-800' },
+            CANCELLED: { label: 'Cancelada', badgeClass: 'bg-red-100 text-red-700' },
+        };
+        return map[status] ?? map.DRAFT;
+    }
+
+    async function obtainCsrfToken() {
+        if (window.trekkoAuth) {
+            const token = window.trekkoAuth.getCsrfToken?.();
+            if (token) return token;
+            await window.trekkoAuth.readyPromise;
+            const refreshed = window.trekkoAuth.getCsrfToken?.();
+            if (refreshed) return refreshed;
+        }
+
+        try {
+            const response = await fetch(`${AUTH_API}/csrf`, { credentials: 'include' });
+            const payload = await response.json();
+            if (payload?.csrfToken) {
+                sessionState.csrfToken = payload.csrfToken;
+                return payload.csrfToken;
+            }
+        } catch (error) {
+            console.error('Erro ao obter token CSRF:', error);
+        }
+
+        return sessionState.csrfToken;
+    }
+
+    function getDifficultyIcon(difficulty) {
+        const normalized = (difficulty ?? '').toString().toLowerCase();
+        const icons = {
+            facil: '🟢',
+            fácil: '🟢',
+            moderado: '🟡',
+            dificil: '🟠',
+            difícil: '🟠',
+            extremo: '🔴',
+        };
+        return icons[normalized] ?? '⚪';
+    }
+
+    function getDifficultyLabel(difficulty) {
+        const normalized = (difficulty ?? '').toString().toLowerCase();
+        const labels = {
+            facil: 'Fácil',
+            fácil: 'Fácil',
+            moderado: 'Moderado',
+            dificil: 'Difícil',
+            difícil: 'Difícil',
+            extremo: 'Extremo',
+        };
+        return labels[normalized] ?? 'Não definido';
+    }
+</script>
+
+</body>
+</html>
+

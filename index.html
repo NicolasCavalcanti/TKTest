@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trekko – Trilhas e guias no Brasil | Conecte-se com a natureza</title>
+    <meta name="description" content="Descubra trilhas incríveis, encontre guias experientes certificados CADASTUR e planeje sua próxima aventura na natureza brasileira.">
+    <meta name="keywords" content="trilhas, trekking, guias, natureza, aventura, brasil, cadastur, montanha, cachoeira">
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S816P190VN"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-S816P190VN');
+    </script>
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2482023752745520" crossorigin="anonymous"></script>
+    <meta name="google-adsense-account" content="ca-pub-2482023752745520">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.trekko.com.br/">
+    <meta property="og:title" content="Trekko – Trilhas e guias no Brasil">
+    <meta property="og:description" content="Descubra trilhas incríveis, encontre guias experientes certificados CADASTUR e planeje sua próxima aventura na natureza brasileira.">
+    <meta property="og:image" content="https://www.trekko.com.br/images/og-image.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.trekko.com.br/">
+    <meta property="twitter:title" content="Trekko – Trilhas e guias no Brasil">
+    <meta property="twitter:description" content="Descubra trilhas incríveis, encontre guias experientes certificados CADASTUR e planeje sua próxima aventura na natureza brasileira.">
+    <meta property="twitter:image" content="https://www.trekko.com.br/images/og-image.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <nav class="nav-container">
+            <a href="https://www.trekko.com.br/" class="logo">
+                <i class="fas fa-mountain"></i>
+                Trekko
+            </a>
+            
+            <div class="nav-menu" id="navMenu">
+                <a href="trilhas.html" class="nav-link">Trilhas</a>
+                <a href="guias.html" class="nav-link">Guias</a>
+                <a href="#como-funciona" class="nav-link">Como Funciona</a>
+                <a href="/sobre.html" class="nav-link">Sobre</a>
+            </div>
+            
+            <div class="nav-actions">
+                <!-- Botões de autenticação (mostrados quando não logado) -->
+                <div id="authButtons" class="auth-buttons">
+                    <button id="loginBtn" class="btn btn-secondary" data-auth="login">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Entrar
+                    </button>
+                    <button id="registerBtn" class="btn btn-primary" data-auth="register">
+                        <i class="fas fa-user-plus"></i>
+                        Cadastrar
+                    </button>
+                </div>
+                
+                <!-- Menu do usuário (mostrado quando logado) -->
+                <div id="userMenu" class="user-menu hidden">
+                    <button id="userMenuBtn" class="user-menu-btn">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="userName">Usuário</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div id="userDropdown" class="user-dropdown hidden">
+                        <a href="perfil.html" class="dropdown-item">
+                            <i class="fas fa-user"></i>
+                            Meu Perfil
+                        </a>
+                        <a href="perfil.html#favoritos" class="dropdown-item">
+                            <i class="fas fa-heart"></i>
+                            Favoritos
+                        </a>
+                        <hr class="dropdown-divider">
+                        <button id="logoutBtn" onclick="trekkoAuth.logout()" class="dropdown-item logout-btn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Sair
+                        </button>
+                    </div>
+                </div>
+                
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-background">
+            <div class="hero-overlay"></div>
+        </div>
+        
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    Descubra as mais belas
+                    <span class="highlight">trilhas do Brasil</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Conecte-se com guias certificados CADASTUR e viva experiências únicas na natureza brasileira. 
+                    Sua próxima aventura começa aqui.
+                </p>
+            </div>
+            
+            <div class="hero-search">
+                <div class="search-container">
+                    <div class="search-field search-input-field">
+                        <label for="searchInput">
+                            <i class="fas fa-search"></i>
+                            Buscar
+                        </label>
+                        <input type="text" id="searchInput" placeholder="Nome da trilha, cidade, ponto turístico...">
+                    </div>
+                    <div class="search-field">
+                        <label for="estadoSelect">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Estado
+                        </label>
+                        <select id="estadoSelect">
+                            <option value="">Todos os Estados</option>
+                            <option value="AC">Acre</option>
+                            <option value="AL">Alagoas</option>
+                            <option value="AP">Amapá</option>
+                            <option value="AM">Amazonas</option>
+                            <option value="BA">Bahia</option>
+                            <option value="CE">Ceará</option>
+                            <option value="DF">Distrito Federal</option>
+                            <option value="ES">Espírito Santo</option>
+                            <option value="GO">Goiás</option>
+                            <option value="MA">Maranhão</option>
+                            <option value="MT">Mato Grosso</option>
+                            <option value="MS">Mato Grosso do Sul</option>
+                            <option value="MG">Minas Gerais</option>
+                            <option value="PA">Pará</option>
+                            <option value="PB">Paraíba</option>
+                            <option value="PR">Paraná</option>
+                            <option value="PE">Pernambuco</option>
+                            <option value="PI">Piauí</option>
+                            <option value="RJ">Rio de Janeiro</option>
+                            <option value="RN">Rio Grande do Norte</option>
+                            <option value="RS">Rio Grande do Sul</option>
+                            <option value="RO">Rondônia</option>
+                            <option value="RR">Roraima</option>
+                            <option value="SC">Santa Catarina</option>
+                            <option value="SP">São Paulo</option>
+                            <option value="SE">Sergipe</option>
+                            <option value="TO">Tocantins</option>
+                        </select>
+                    </div>
+                    <div class="search-field">
+                        <label for="dificuldadeSelect">
+                            <i class="fas fa-chart-line"></i>
+                            Dificuldade
+                        </label>
+                        <select id="dificuldadeSelect">
+                            <option value="">Todas</option>
+                            <option value="facil">Fácil</option>
+                            <option value="moderada">Moderada</option>
+                            <option value="dificil">Difícil</option>
+                            <option value="extrema">Extrema</option>
+                        </select>
+                    </div>
+                    <div class="search-field">
+                        <label for="distanciaInput">
+                            <i class="fas fa-route"></i>
+                            Distância (km)
+                        </label>
+                        <input type="number" id="distanciaInput" placeholder="Ex: 10">
+                    </div>
+                    <button class="search-btn" id="searchHomepageBtn">
+                        <i class="fas fa-search"></i>
+                        Buscar Trilhas
+                    </button>
+                </div>
+            </div>
+            
+            <div class="hero-actions">
+                <a href="trilhas.html" class="btn btn-primary btn-large" id="explorarTrilhasBtn">
+                    <i class="fas fa-hiking"></i>
+                    Explorar Trilhas
+                </a>
+                <a href="guias.html" class="btn btn-secondary btn-large" id="encontrarGuiasBtn">
+                    <i class="fas fa-compass"></i>
+                    Encontrar Guias
+                </a>
+            </div>
+        </div>
+        
+
+    </section>
+
+    <!-- Trilhas em Destaque -->
+    <section class="section trilhas-destaque" id="trilhas">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Trilhas em Destaque</h2>
+                <p class="section-subtitle">
+                    Descubra as trilhas mais procuradas e bem avaliadas do Brasil
+                </p>
+            </div>
+
+            <div class="trilhas-carousel">
+                <div class="carousel-container" id="trilhasCarousel">
+                    <!-- Trilhas serão carregadas dinamicamente -->
+                </div>
+            </div>
+            <script src="js/trail-images.js"></script>
+            <script type="module">
+                import { renderTrailsCarousel } from "/scripts/trails-carousel.js";
+                renderTrailsCarousel(document.getElementById("trilhasCarousel"));
+            </script>
+
+            <div class="section-footer">
+                <a href="trilhas.html" class="btn btn-primary">
+                    <i class="fas fa-hiking"></i>
+                    Ver Todas as Trilhas
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Como Funciona -->
+    <section class="section como-funciona" id="como-funciona">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Como Funciona</h2>
+                <p class="section-subtitle">
+                    Três passos simples para sua próxima aventura na natureza
+                </p>
+            </div>
+
+            <div class="steps-grid">
+                <div class="step" data-step="1">
+                    <div class="step-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="step-title">Encontre sua trilha</h3>
+                    <p class="step-description">
+                        Explore nossa seleção de trilhas em todo o Brasil. Filtre por localização,
+                        dificuldade e duração para encontrar a aventura perfeita.
+                    </p>
+                </div>
+
+                <div class="step" data-step="2">
+                    <div class="step-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <h3 class="step-title">Escolha um guia certificado</h3>
+                    <p class="step-description">
+                        Conecte-se com guias profissionais certificados pelo CADASTUR.
+                        Segurança e experiência garantidas para sua jornada.
+                    </p>
+                </div>
+
+                <div class="step" data-step="3">
+                    <div class="step-icon">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <h3 class="step-title">Viva a experiência</h3>
+                    <p class="step-description">
+                        Reserve sua aventura e prepare-se para momentos inesquecíveis.
+                        Descubra a beleza natural do Brasil com total segurança.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section guias-certificados" id="guias">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Guias Certificados CADASTUR</h2>
+                <p class="section-subtitle">
+                    Profissionais qualificados e certificados para garantir sua segurança e experiência única
+                </p>
+            </div>
+            
+            <div class="certificacao-info">
+                <div class="certificacao-card">
+                    <div class="certificacao-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <div class="certificacao-content">
+                        <h3>O que é CADASTUR?</h3>
+                        <p>
+                            O CADASTUR é o registro obrigatório de pessoas físicas e jurídicas que atuam no setor do turismo. 
+                            Todos os nossos guias são certificados e registrados no Ministério do Turismo.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="certificacao-benefits">
+                    <h4>Benefícios da Certificação:</h4>
+                    <ul>
+                        <li><i class="fas fa-shield-alt"></i> Segurança garantida</li>
+                        <li><i class="fas fa-graduation-cap"></i> Conhecimento especializado</li>
+                        <li><i class="fas fa-first-aid"></i> Treinamento em primeiros socorros</li>
+                        <li><i class="fas fa-leaf"></i> Consciência ambiental</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="section-footer">
+                <a href="guias.html" class="btn btn-secondary">
+                    <i class="fas fa-compass"></i>
+                    Ver Todos os Guias
+                </a>
+                <a href="#" class="btn btn-primary" id="tornarGuiaBtn">
+                    <i class="fas fa-user-plus"></i>
+                    Tornar-se um Guia
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Estados e Destinos -->
+    <section class="section estados-destinos">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Explore o Brasil</h2>
+                <p class="section-subtitle">
+                    Trilhas incríveis em todos os estados brasileiros
+                </p>
+            </div>
+            <div class="estados-carousel">
+                <div class="carousel-container" id="estadosCarousel">
+                    <!-- Estados serão carregados dinamicamente -->
+                </div>
+            </div>
+            <script type="module">
+                import { renderStatesCarousel } from "/scripts/states-carousel.js";
+                renderStatesCarousel(document.getElementById("estadosCarousel"));
+            </script>
+        </div>
+    </section>
+
+    <!-- Depoimentos -->
+    <section class="section depoimentos">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">O que dizem nossos aventureiros</h2>
+                <p class="section-subtitle">
+                    Experiências reais de quem já viveu momentos únicos conosco
+                </p>
+            </div>
+            
+            <div class="depoimentos-carousel">
+                <div class="depoimentos-container" id="depoimentosCarousel">
+                    <!-- Depoimentos serão carregados dinamicamente -->
+                </div>
+                <div class="carousel-indicators" id="depoimentosIndicators">
+                    <!-- Indicadores serão gerados dinamicamente -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="section newsletter">
+        <div class="container">
+            <div class="newsletter-content">
+                <div class="newsletter-text">
+                    <h2>Fique por dentro das novidades</h2>
+                    <p>Receba dicas de trilhas, ofertas especiais e novidades sobre turismo de aventura no Brasil.</p>
+                </div>
+                <form class="newsletter-form" id="newsletterForm">
+                    <input type="email" placeholder="Seu melhor e-mail" required>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i>
+                        Inscrever-se
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-mountain"></i>
+                        <span>Trekko</span>
+                    </div>
+                    <p class="footer-description">
+                        Conectando aventureiros com as mais belas trilhas do Brasil através de guias certificados e experiências únicas.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Trilhas</h4>
+                    <ul>
+                        <li><a href="#">Trilhas Fáceis</a></li>
+                        <li><a href="#">Trilhas Moderadas</a></li>
+                        <li><a href="#">Trilhas Difíceis</a></li>
+                        <li><a href="#">Expedições</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Guias</h4>
+                    <ul>
+                        <li><a href="#">Encontrar Guias</a></li>
+                        <li><a href="#">Tornar-se Guia</a></li>
+                        <li><a href="#">Certificação CADASTUR</a></li>
+                        <li><a href="#">Área do Guia</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Suporte</h4>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Contato</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Trekko. Todos os direitos reservados.</p>
+                <p>Desenvolvido com <i class="fas fa-heart"></i> para os amantes da natureza brasileira.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="auth.js"></script>
+    <script src="homepage.js"></script>
+</body>
+</html>
+

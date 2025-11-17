@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="trekko-api-base" content="/api" />
+  <title>Trekko Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="js/admin-api.js" defer></script>
+  <script src="admin-auth.js" defer></script>
+  <script src="js/admin-dashboard.js" defer></script>
+</head>
+<body class="flex bg-gray-50">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white border-r h-screen fixed left-0 top-0 overflow-y-auto">
+    <div class="p-4">
+      <h1 class="text-xl font-bold mb-6">Trekko Admin</h1>
+      <nav class="space-y-4">
+        <div>
+          <a href="admin.html" class="block text-gray-700 hover:text-green-600" data-permission="DASHBOARD">Dashboard</a>
+        </div>
+        <div>
+          <a href="guias.html" class="block text-gray-700 hover:text-green-600" data-permission="GUIAS">Usuários &amp; Guias</a>
+        </div>
+        <div>
+          <a href="trilhas.html" class="block text-gray-700 hover:text-green-600" data-permission="TRILHAS">Trilhas</a>
+        </div>
+        <div>
+          <a href="admin-expeditions.html" class="block text-gray-700 hover:text-green-600" data-permission="EXPEDICOES">Expedições</a>
+        </div>
+        <div>
+          <a href="#" class="block text-gray-700 hover:text-green-600" data-permission="FINANCEIRO">Financeiro</a>
+        </div>
+        <div>
+          <a href="#" class="block text-gray-700 hover:text-green-600" data-permission="CMS">CMS</a>
+        </div>
+        <div>
+          <p class="text-xs text-gray-400 uppercase mb-1">Integrações</p>
+          <a href="#" class="block font-medium text-green-700" id="link-cadastur" data-permission="INTEGRACOES">Cadastur (CSV)</a>
+        </div>
+        <div>
+          <a href="#" class="block text-gray-700 hover:text-green-600" data-permission="CONFIGURACOES">Configurações</a>
+        </div>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <div class="flex-1 ml-64 min-h-screen flex flex-col">
+    <header class="bg-white border-b p-4 flex items-center justify-between">
+      <div>
+        <h2 class="text-2xl font-bold" id="section-title">Dashboard</h2>
+        <nav class="text-sm text-gray-500">Início / Dashboard</nav>
+      </div>
+      <div class="flex items-center space-x-3">
+        <span id="refreshStatus" class="text-sm text-gray-500 hidden">Atualizando...</span>
+        <button id="refreshDashboard" class="bg-green-600 text-white px-4 py-2 rounded" data-permission="DASHBOARD">Atualizar</button>
+      </div>
+    </header>
+
+    <main id="content" class="p-6 flex-1 space-y-10 overflow-y-auto">
+      <section aria-labelledby="overviewTitle" class="space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+          <div>
+            <h3 id="overviewTitle" class="text-xl font-semibold text-gray-900">Visão Geral</h3>
+            <p class="text-sm text-gray-500">
+              Indicadores consolidados das operações. Garantimos atualização em até
+              <span class="font-medium text-gray-700" data-sla></span>.
+            </p>
+          </div>
+          <div id="metricsMeta" class="text-sm text-gray-500">Carregando indicadores...</div>
+        </div>
+        <p id="metricsValidation" class="text-xs text-gray-500">Reconciliando com relatórios...</p>
+        <div id="metricsError" class="text-sm text-red-600 bg-red-50 border border-red-100 px-4 py-3 rounded hidden"></div>
+        <div id="metricsGrid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
+          <article class="bg-white rounded-lg shadow-sm p-5 border border-gray-100">
+            <div class="flex items-start justify-between">
+              <div>
+                <h4 class="text-sm text-gray-500 uppercase tracking-wide">Trilhas</h4>
+                <p id="metric-trails" class="text-3xl font-bold text-gray-900 mt-2">--</p>
+              </div>
+              <span class="text-3xl" aria-hidden="true">🥾</span>
+            </div>
+            <p class="mt-3 text-xs text-gray-400">Total de trilhas publicadas.</p>
+          </article>
+          <article class="bg-white rounded-lg shadow-sm p-5 border border-gray-100">
+            <div class="flex items-start justify-between">
+              <div>
+                <h4 class="text-sm text-gray-500 uppercase tracking-wide">Expedições</h4>
+                <p id="metric-expeditions" class="text-3xl font-bold text-gray-900 mt-2">--</p>
+              </div>
+              <span class="text-3xl" aria-hidden="true">🧭</span>
+            </div>
+            <p class="mt-3 text-xs text-gray-400">Expedições ativas e planejadas.</p>
+          </article>
+          <article class="bg-white rounded-lg shadow-sm p-5 border border-gray-100">
+            <div class="flex items-start justify-between">
+              <div>
+                <h4 class="text-sm text-gray-500 uppercase tracking-wide">Guias ativos</h4>
+                <p id="metric-active-guides" class="text-3xl font-bold text-gray-900 mt-2">--</p>
+              </div>
+              <span class="text-3xl" aria-hidden="true">🧑‍✈️</span>
+            </div>
+            <p class="mt-3 text-xs text-gray-400">Guias com documentação verificada.</p>
+          </article>
+          <article class="bg-white rounded-lg shadow-sm p-5 border border-gray-100">
+            <div class="flex items-start justify-between">
+              <div>
+                <h4 class="text-sm text-gray-500 uppercase tracking-wide">Reservas</h4>
+                <p id="metric-reservations" class="text-3xl font-bold text-gray-900 mt-2">--</p>
+              </div>
+              <span class="text-3xl" aria-hidden="true">📅</span>
+            </div>
+            <p class="mt-3 text-xs text-gray-400">Reservas confirmadas para as próximas saídas.</p>
+          </article>
+          <article class="bg-white rounded-lg shadow-sm p-5 border border-gray-100">
+            <div class="flex items-start justify-between">
+              <div>
+                <h4 class="text-sm text-gray-500 uppercase tracking-wide">Receita</h4>
+                <p id="metric-revenue" class="text-3xl font-bold text-gray-900 mt-2">--</p>
+              </div>
+              <span class="text-3xl" aria-hidden="true">💰</span>
+            </div>
+            <p class="mt-3 text-xs text-gray-400">Receita líquida confirmada no período.</p>
+          </article>
+        </div>
+      </section>
+
+      <section aria-labelledby="shortcutsTitle" class="space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+          <h3 id="shortcutsTitle" class="text-xl font-semibold text-gray-900">Atalhos de criação rápida</h3>
+          <p class="text-sm text-gray-500">Inicie novos cadastros sem sair do painel.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <button type="button" class="bg-white border border-gray-100 rounded-lg shadow-sm p-5 text-left hover:border-green-500 transition" data-quick-action="trail" data-permission="TRILHAS">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-sm text-gray-500 uppercase tracking-wide">Nova trilha</p>
+                <p class="mt-2 text-lg font-semibold text-gray-900">Cadastrar trilha</p>
+                <p class="mt-1 text-sm text-gray-500">Título, localização e nível de dificuldade.</p>
+              </div>
+              <span class="text-3xl" aria-hidden="true">🥾</span>
+            </div>
+          </button>
+          <button type="button" class="bg-white border border-gray-100 rounded-lg shadow-sm p-5 text-left hover:border-green-500 transition" data-quick-action="expedition" data-permission="EXPEDICOES">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-sm text-gray-500 uppercase tracking-wide">Nova expedição</p>
+                <p class="mt-2 text-lg font-semibold text-gray-900">Abrir turma</p>
+                <p class="mt-1 text-sm text-gray-500">Datas, vagas e guia responsável.</p>
+              </div>
+              <span class="text-3xl" aria-hidden="true">🧗</span>
+            </div>
+          </button>
+          <button type="button" class="bg-white border border-gray-100 rounded-lg shadow-sm p-5 text-left hover:border-green-500 transition" data-quick-action="post" data-permission="CMS">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-sm text-gray-500 uppercase tracking-wide">Novo post</p>
+                <p class="mt-2 text-lg font-semibold text-gray-900">Publicar conteúdo</p>
+                <p class="mt-1 text-sm text-gray-500">Título, slug e status de publicação.</p>
+              </div>
+              <span class="text-3xl" aria-hidden="true">📝</span>
+            </div>
+          </button>
+        </div>
+      </section>
+
+      <section aria-labelledby="eventsTitle" class="space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+          <div>
+            <h3 id="eventsTitle" class="text-xl font-semibold text-gray-900">Últimos eventos do sistema</h3>
+            <p class="text-sm text-gray-500">Monitoramento em tempo real das operações críticas.</p>
+          </div>
+          <div id="eventsMeta" class="text-sm text-gray-500">Carregando eventos...</div>
+        </div>
+        <div id="eventsError" class="text-sm text-red-600 bg-red-50 border border-red-100 px-4 py-3 rounded hidden"></div>
+        <div class="bg-white border border-gray-100 rounded-lg shadow-sm">
+          <div id="eventsSkeleton" class="p-6 text-sm text-gray-500 flex items-center space-x-3">
+            <span class="inline-block h-3 w-3 rounded-full bg-green-500 animate-pulse"></span>
+            <span>Sincronizando com o sistema...</span>
+          </div>
+          <ul id="eventsList" class="divide-y divide-gray-100 hidden"></ul>
+          <div id="eventsEmpty" class="p-6 text-sm text-gray-500 hidden">Nenhum evento recente nas últimas horas.</div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="quickActionModal" class="hidden fixed inset-0 bg-gray-900/60 z-50 items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-xl" role="dialog" aria-modal="true" aria-labelledby="quickActionModalTitle">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+        <h4 id="quickActionModalTitle" class="text-lg font-semibold text-gray-900"></h4>
+        <button id="quickActionModalClose" type="button" class="text-gray-500 hover:text-gray-700">
+          <span class="sr-only">Fechar</span>
+          ✕
+        </button>
+      </div>
+      <form id="quickActionForm" class="px-6 py-4 space-y-4">
+        <div id="quickActionFields" class="space-y-4"></div>
+        <p id="quickActionFeedback" class="text-sm hidden"></p>
+        <div class="flex items-center justify-end space-x-2 pt-2 border-t border-gray-200">
+          <button id="quickActionCancel" type="button" class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800">Cancelar</button>
+          <button id="quickActionSubmit" type="submit" class="px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
