@@ -276,10 +276,14 @@ class TrekkoAuth {
         const payload = Object.fromEntries(formData);
 
         // Correção: Remover o campo cadastur_number se o usuário for 'trekker'
-            // Correção: Remover cadastur_number do payload se o usuário for 'trekker'
-            if (payload.user_type === 'trekker') {
-                delete payload.cadastur_number;
-            }
+        if (payload.user_type === 'trekker') {
+            delete payload.cadastur_number;
+        }
+        
+        // Garantir que cadastur_number não seja enviado vazio
+        if (!payload.cadastur_number || payload.cadastur_number.trim() === '') {
+            delete payload.cadastur_number;
+        }
 
         if ((payload.user_type === 'guia' || payload.user_type === 'guide') && payload.cadastur_number) {
             const isValid = await this.validateCadastur(payload.name ?? '', payload.cadastur_number);
