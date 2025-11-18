@@ -1,0 +1,423 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model HealthCheck {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  status    String   @default("ok")
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum GuideVerificationStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum ExpeditionStatus {
+  DRAFT
+  PUBLISHED
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  WAITLISTED
+  EXPIRED
+}
+
+enum ReviewStatus {
+  PENDING
+  PUBLISHED
+  REJECTED
+  FLAGGED
+}
+
+enum PaymentProvider {
+  STRIPE
+  PAGSEGURO
+  MERCADO_PAGO
+  PAYPAL
+  MANUAL
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  PIX
+  BOLETO
+  BANK_TRANSFER
+  CASH
+  OTHER
+}
+
+enum PaymentStatus {
+  PENDING
+  AUTHORIZED
+  PAID
+  REFUNDED
+  FAILED
+  CANCELLED
+  CHARGEBACK
+}
+
+enum Region {
+  NORTH
+  NORTHEAST
+  CENTRAL_WEST
+  SOUTHEAST
+  SOUTH
+}
+
+model User {
+  id           String        @id @default(uuid())
+  email        String        @unique
+  passwordHash String
+  name         String?
+  role         String        @default("user")
+  status       UserStatus    @default(ACTIVE)
+  deletedAt    DateTime?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  sessions     AuthSession[]
+  auditLogs    AuditLog[]
+  guideProfile GuideProfile?
+  reservations Reservation[]
+  expeditions  Expedition[]  @relation("ExpeditionCreator")
+  reviews      Review[]       @relation("UserReviews")
+  reviewResponses Review[]    @relation("ReviewResponses")
+}
+
+model AuthSession {
+  id        String    @id @default(uuid())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+  revokedAt DateTime?
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  entity    String
+  entityId  String?
+  action    String
+  diff      Json?
+  ip        String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([entity, entityId])
+}
+
+model GuideProfile {
+  id                       String                  @id @default(uuid())
+  userId                   String                  @unique
+  displayName              String?
+  bio                      String?
+  experienceYears          Int?
+  languages                String                
+  serviceAreas             String                
+  cadasturNumber           String?                 @unique
+  verificationStatus       GuideVerificationStatus @default(PENDING)
+  verificationNotes        String?
+  verificationReviewedAt   DateTime?
+  verificationReviewedById String?
+  verifiedAt               DateTime?
+  rejectedAt               DateTime?
+  deletedAt                DateTime?
+  createdAt                DateTime                @default(now())
+  updatedAt                DateTime                @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  leadExpeditions Expedition[]
+  reviews Review[] @relation("GuideReviews")
+}
+
+model State {
+  id        Int      @id @default(autoincrement())
+  code      String   @unique
+  name      String
+  region    Region
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cities City[]
+  trails Trail[]
+
+  @@index([name])
+  @@index([region])
+}
+
+model City {
+  id        Int      @id @default(autoincrement())
+  stateId   Int
+  name      String
+  slug      String
+  isCapital Boolean  @default(false)
+  latitude  Float? 
+  longitude Float? 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  state  State   @relation(fields: [stateId], references: [id])
+  parks  Park[]
+  trails Trail[]
+
+  @@unique([stateId, slug])
+  @@index([stateId, name])
+}
+
+model Park {
+  id          Int      @id @default(autoincrement())
+  cityId      Int
+  name        String
+  slug        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  city City @relation(fields: [cityId], references: [id])
+
+  @@unique([cityId, slug])
+  @@index([cityId, name])
+}
+
+enum TrailDifficulty {
+  EASY
+  MODERATE
+  HARD
+  EXTREME
+}
+
+model Trail {
+  id              String          @id @default(uuid())
+  slug            String          @unique
+  name            String
+  summary         String?
+  description     String?
+  difficulty      TrailDifficulty @default(MODERATE)
+  distanceKm      Float?        
+  durationMinutes Int?
+  elevationGain   Int?
+  elevationLoss   Int?
+  maxAltitude     Int?
+  minAltitude     Int?
+  stateId         Int?
+  cityId          Int?
+  hasWaterPoints  Boolean         @default(false)
+  hasCamping      Boolean         @default(false)
+  paidEntry       Boolean         @default(false)
+  entryFeeCents   Int?
+  guideFeeCents   Int?
+  meetingPoint    String?
+  notes           String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  deletedAt       DateTime?
+
+  state  State?  @relation(fields: [stateId], references: [id])
+  city   City?   @relation(fields: [cityId], references: [id])
+  medias Media[]
+  expeditions Expedition[]
+  reviews Review[] @relation("TrailReviews")
+
+  @@index([stateId])
+  @@index([cityId])
+  @@index([difficulty])
+  @@index([deletedAt])
+}
+
+model Media {
+  id          String    @id @default(uuid())
+  trailId     String?
+  key         String    @unique
+  fileName    String?
+  contentType String?
+  size        Int?
+  title       String?
+  description String?
+  order       Int?
+  publicUrl   String?
+  uploadedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+
+  trail Trail? @relation(fields: [trailId], references: [id])
+
+  @@index([trailId])
+  @@index([deletedAt])
+  @@index([trailId, order])
+}
+
+model Expedition {
+  id             String           @id @default(uuid())
+  slug           String           @unique
+  title          String
+  description    String?
+  status         ExpeditionStatus @default(DRAFT)
+  difficulty     TrailDifficulty?
+  startDate      DateTime
+  endDate        DateTime
+  priceCents     Int
+  currency       String           @default("BRL")
+  maxParticipants Int
+  availableSpots Int?
+  trailId        String?
+  leadGuideId    String?
+  createdById    String
+  publishedAt    DateTime?
+  cancelledAt    DateTime?
+  cancellationReason String?
+  notes          String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  deletedAt      DateTime?
+
+  trail      Trail?        @relation(fields: [trailId], references: [id])
+  leadGuide  GuideProfile? @relation(fields: [leadGuideId], references: [id])
+  createdBy  User          @relation("ExpeditionCreator", fields: [createdById], references: [id])
+  reviews    Review[]      @relation("ExpeditionReviews")
+  reservations Reservation[]
+
+  @@index([status])
+  @@index([startDate])
+  @@index([leadGuideId])
+  @@index([createdById])
+}
+
+model Reservation {
+  id                    String            @id @default(uuid())
+  code                  String            @unique
+  expeditionId          String
+  userId                String
+  status                ReservationStatus @default(PENDING)
+  headcount             Int               @default(1)
+  totalCents            Int
+  feeCents              Int               @default(0)
+  discountCents         Int               @default(0)
+  currency              String            @default("BRL")
+  emergencyContactName  String?
+  emergencyContactPhone String?
+  notes                 String?
+  internalNotes         String?
+  cancellationReason    String?
+  bookedAt              DateTime          @default(now())
+  confirmedAt           DateTime?
+  cancelledAt           DateTime?
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+  deletedAt             DateTime?
+
+  expedition Expedition @relation(fields: [expeditionId], references: [id])
+  user       User       @relation(fields: [userId], references: [id])
+  payments   Payment[]
+  reviews    Review[]   @relation("ReservationReviews")
+
+  @@index([expeditionId])
+  @@index([userId])
+  @@index([status])
+}
+
+model Payment {
+  id                String          @id @default(uuid())
+  reservationId     String
+  provider          PaymentProvider @default(MANUAL)
+  method            PaymentMethod   @default(PIX)
+  status            PaymentStatus   @default(PENDING)
+  amountCents       Int
+  feeCents          Int             @default(0)
+  netAmountCents    Int?
+  currency          String          @default("BRL")
+  transactionId     String?
+  externalReference String?
+  metadata          Json?
+  paidAt            DateTime?
+  capturedAt        DateTime?
+  cancelledAt       DateTime?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  deletedAt         DateTime?
+
+  reservation Reservation     @relation(fields: [reservationId], references: [id])
+  refunds     PaymentRefund[]
+
+  @@index([reservationId])
+  @@index([status])
+  @@index([transactionId])
+  @@index([provider])
+  @@index([method])
+}
+
+model PaymentRefund {
+  id          String        @id @default(uuid())
+  paymentId   String
+  amountCents Int
+  reason      String?
+  status      PaymentStatus @default(PENDING)
+  processedAt DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  payment Payment @relation(fields: [paymentId], references: [id])
+
+  @@index([paymentId])
+  @@index([status])
+}
+
+model Review {
+  id            String       @id @default(uuid())
+  reservationId String?
+  expeditionId  String?
+  trailId       String?
+  guideId       String?
+  userId        String
+  rating        Int
+  title         String?
+  comment       String?
+  status        ReviewStatus @default(PENDING)
+  response      String?
+  respondedAt   DateTime?
+  responseById  String?
+  publishedAt   DateTime?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  deletedAt     DateTime?
+
+  reservation Reservation?  @relation("ReservationReviews", fields: [reservationId], references: [id])
+  expedition  Expedition?   @relation("ExpeditionReviews", fields: [expeditionId], references: [id])
+  trail       Trail?        @relation("TrailReviews", fields: [trailId], references: [id])
+  guide       GuideProfile? @relation("GuideReviews", fields: [guideId], references: [id])
+  user        User          @relation("UserReviews", fields: [userId], references: [id])
+  responseBy  User?         @relation("ReviewResponses", fields: [responseById], references: [id])
+
+  @@index([expeditionId])
+  @@index([trailId])
+  @@index([guideId])
+  @@index([userId])
+  @@index([status])
+  @@index([reservationId])
+}
