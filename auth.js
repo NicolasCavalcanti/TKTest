@@ -276,9 +276,9 @@ class TrekkoAuth {
         const payload = Object.fromEntries(formData);
 
         // Correção: Remover o campo cadastur_number se o usuário for 'trekker'
-        // Correção: Remover o campo cadastur_number se o usuário for 'trekker' OU se estiver vazio (para evitar erro de validação do backend)
+        // Correção: Enviar null para cadastur_number se o usuário for 'trekker' OU se estiver vazio
         if (payload.user_type === 'trekker' || !payload.cadastur_number || payload.cadastur_number.trim() === '') {
-            delete payload.cadastur_number;
+            payload.cadastur_number = null;
         }
         
 
